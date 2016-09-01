@@ -3,8 +3,8 @@ import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import SpokenTheme from '../themes/SpokenTheme';
 var CustomerDropdown = require('../components/CustomerDropdown');
 
-var DialerAdminDialog = require('../components/DialerAdminDialog');
-
+//var DialerAdminDialog = require('../components/DialerAdminDialog');
+var CampaignsAdminContainer = require('../containers/CampaignsAdminContainer');
     
 const appStyles = {
     topnav: {
@@ -89,6 +89,16 @@ var SpokenDialerApp = React.createClass({
     console.log("Selected Customer is " + value);
   },    
 
+    handleCampaignsUpdate : function(key, updatedRow) {
+    //merge updated row with current row and rerender by setting state
+    var updatedRows = this.state.campaigns;
+    updatedRow.updated = true; // Flag row as dirty
+    Object.assign(updatedRows[key], updatedRow);
+    this.setState({
+        campaigns : updatedRows
+    });
+  },
+
   populateCampaignsDlg: function() {
       console.log('populateCampaignsDlg CALLED')
       //Reloads campaigns array
@@ -117,7 +127,9 @@ var SpokenDialerApp = React.createClass({
 
         </div>
         <div className="mainPane" style={appStyles.content}>
-            <DialerAdminDialog campaigns={this.state.campaigns}/>
+            <CampaignsAdminContainer 
+                campaigns={this.state.campaigns}
+                onCampaignsUpdate={this.handleCampaignsUpdate}/>
         </div>                    
       </div>
     );

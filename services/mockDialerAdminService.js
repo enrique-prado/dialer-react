@@ -10,14 +10,14 @@ var MockDialerAdminService = (function () {
         ];
 
     var campaigns = [
-        { campaign_id:"100", name:"Sprint Campaign 1", client:"Sprint", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", restart:false },
-        { campaign_id:"200", name:"ATT Campaign", client:"ATT", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", restart:false },
-        { campaign_id:"300", name:"Charbroil Campaign", client:"Charbroil", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", restart:false },
-        { campaign_id:"400", name:"Sprint 2", client:"Sprint", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"paused", restart:false },
-        { campaign_id:"500", name:"Sprint Campaign 3", client:"Sprint", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"ended", restart:false },
-        { campaign_id:"600", name:"ATT Campaign 2", client:"ATT", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", restart:false },
-        { campaign_id:"700", name:"Charbroil Campaign 2", client:"Charbroil", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", restart:false },
-        { campaign_id:"800", name:"Sprint 3", client:"Sprint", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"not_started", restart:false }
+        { campaign_id:"100", name:"Sprint Campaign 1", client:"Sprint", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", deleted:false, restart:false },
+        { campaign_id:"200", name:"ATT Campaign", client:"ATT", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", deleted:false, restart:false },
+        { campaign_id:"300", name:"Charbroil Campaign", client:"Charbroil", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", deleted:false, restart:false },
+        { campaign_id:"400", name:"Sprint 2", client:"Sprint", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"paused", deleted:false, restart:false },
+        { campaign_id:"500", name:"Sprint Campaign 3", client:"Sprint", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"ended", deleted:false, restart:false },
+        { campaign_id:"600", name:"ATT Campaign 2", client:"ATT", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", deleted:false, restart:false },
+        { campaign_id:"700", name:"Charbroil Campaign 2", client:"Charbroil", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"active", deleted:false, restart:false },
+        { campaign_id:"800", name:"Sprint 3", client:"Sprint", start_date:"2015-11-26 08:00:00", end_date:"2015-11-30 20:00:00", status:"not_started", deleted:false, restart:false }
         
     ]
 
@@ -32,7 +32,7 @@ var MockDialerAdminService = (function () {
             var campaignsList = [];
             for (var i = 0; i < campaigns.length; i++) {
                 if (campaigns[i].client == clientID) {
-                    var campaign = new CampaignSummaryVM(campaigns[i])
+                    var campaign = new CampaignSummaryVM(campaigns[i], i)
                     campaignsList.push(campaign);
                 }
             }
@@ -60,11 +60,12 @@ var MockDialerAdminService = (function () {
     }
 
 
-    function CampaignSummaryVM(campaign) {
+    function CampaignSummaryVM(campaign, rowId) {
         this.name = campaign.name;
         this.status = convertStatus(campaign.status);
         this.startDate = campaign.start_date;
         this.endDate = campaign.end_date;
+        this.row_id = rowId;
     }    
 
     // Public interface methods

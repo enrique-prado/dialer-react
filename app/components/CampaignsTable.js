@@ -15,9 +15,12 @@ import ActionDelete from 'material-ui/lib/svg-icons/action/delete';
 
 const tableStyles = {
   narrowColumn: {
-    width: '10px'
+    width: '50px'
   },
-    wideColumn: {
+    mediumColumn: {
+    width: '130px',
+  },    
+  wideColumn: {
     width: '160px',
   },
   hiddenColumn: {
@@ -28,7 +31,9 @@ const tableStyles = {
 var CampaignsTable = React.createClass({
   propTypes: {
     rows: React.PropTypes.array,
-    permissionType: React.PropTypes.string
+    onCampaignsUpdate: React.PropTypes.func
+    //enableDialerActions:React.PropTypes.bool,
+    //enableCampaignEditing:React.PropTypes.bool
   },
   
   handleRowSelected : function(rowIdx){
@@ -41,7 +46,7 @@ var CampaignsTable = React.createClass({
     console.log('Correspoding row_id: ' + this.props.rows[key].row_id);
     var updatedRow = this.props.rows[key];
     updatedRow.deleted = true;
-    this.props.onHrsUpdate(key, updatedRow);       
+    this.props.onCampaignsUpdate(key, updatedRow);       
   },
 
   //UI Rendering
@@ -53,16 +58,16 @@ var CampaignsTable = React.createClass({
         if (!campaign.deleted) {
             return (
                 <TableRow key={index}>
-                    <TableRowColumn style={tableStyles.wideColumn}>
+                    <TableRowColumn style={tableStyles.narrowColumn}>
                         {campaign.status}
                     </TableRowColumn>
-                    <TableRowColumn style={tableStyles.wideColumn}>
+                    <TableRowColumn style={tableStyles.mediumColumn}>
                         {campaign.name}
                     </TableRowColumn>                    
-                    <TableRowColumn style={tableStyles.wideColumn}>
+                    <TableRowColumn style={tableStyles.mediumColumn}>
                         {campaign.startDate}
                     </TableRowColumn>
-                    <TableRowColumn style={tableStyles.wideColumn}>
+                    <TableRowColumn style={tableStyles.mediumColumn}>
                         {campaign.endDate}
                     </TableRowColumn>
                     <TableRowColumn>
@@ -82,10 +87,10 @@ var CampaignsTable = React.createClass({
       rowsCount={rowsCount}
       minHeight={290}
       >
-        <TableHeader displaySelectAll={false}>
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
-                <TableHeaderColumn tooltip="Current status of campaign">Status</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Name of Campaign">Campaign Name</TableHeaderColumn>
+                <TableHeaderColumn style={tableStyles.narrowColumn} tooltip="Current status of campaign">Status</TableHeaderColumn>
+                <TableHeaderColumn style={tableStyles.mediumColumn} tooltip="Name of Campaign">Campaign Name</TableHeaderColumn>
                 <TableHeaderColumn tooltip="Day and time when campaign starts running">Start Date</TableHeaderColumn>
                 <TableHeaderColumn tooltip="Date when campaign stops">End Date</TableHeaderColumn>
                 <TableHeaderColumn tooltip="Actions allowed by Administrators">Admin Actions</TableHeaderColumn>
