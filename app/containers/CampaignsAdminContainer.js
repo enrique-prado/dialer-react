@@ -9,28 +9,8 @@ import CampaignsTable from '../components/CampaignsTable';
 var moment = require('moment');
 
 const AdminStyles = {
-  horzLayout: {
-    display:'inline-block',
-    verticalAlign:'top',
-    width:'20%'  
-  },
-  parentDiv: {
-    display: 'inline-block',
-    position: 'relative',
-    width:'120px'
-  },
- btn: {
-    margin: '12',
-    float: 'right'
- },
-  toggle: {
-    display:'inline-block',
-    verticalAlign:'top',
-    paddingTop: '15px',
-    width:'60px'  
-  },
-  newrow:{
-      width:'700px'
+  mainTable:{
+      width:'90%'
   }  
 };
 
@@ -82,22 +62,12 @@ var CampaignsAdminContainer = React.createClass({
         return (
             <div>
                 <div>
-                    <CampaignsTable 
+                    <CampaignsTable style={AdminStyles.mainTable}
                         rows={this.props.campaigns}
                         onCampaignsUpdate={this.props.onCampaignsUpdate}/>
                     <div>
                         {add_row}
                     </div>
-                </div>
-                <div>
-                    <FlatButton label="Save"
-                        secondary={true} 
-                        onClick={this.handleSaveHours} 
-                        style={AdminStyles.btn} />
-                    <FlatButton label="Cancel" 
-                        primary={true} 
-                        onClick={this.handleCancelHours} 
-                        style={AdminStyles.btn} />
                 </div>
             </div>
         );

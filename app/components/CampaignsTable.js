@@ -15,10 +15,10 @@ import ActionDelete from 'material-ui/lib/svg-icons/action/delete';
 
 const tableStyles = {
   narrowColumn: {
-    width: '50px'
+    width: '7%'
   },
     mediumColumn: {
-    width: '130px',
+    width: '10%',
   },    
   wideColumn: {
     width: '160px',
@@ -70,7 +70,7 @@ var CampaignsTable = React.createClass({
                     <TableRowColumn style={tableStyles.mediumColumn}>
                         {campaign.endDate}
                     </TableRowColumn>
-                    <TableRowColumn>
+                    <TableRowColumn style={tableStyles.narrowColumn}>
                         <IconButton onClick={self.handleDeleteRow.bind(self, index)}>
                             <ActionDelete color={Colors.green300} hoverColor={Colors.green700} />
                         </IconButton>
@@ -91,9 +91,9 @@ var CampaignsTable = React.createClass({
             <TableRow>
                 <TableHeaderColumn style={tableStyles.narrowColumn} tooltip="Current status of campaign">Status</TableHeaderColumn>
                 <TableHeaderColumn style={tableStyles.mediumColumn} tooltip="Name of Campaign">Campaign Name</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Day and time when campaign starts running">Start Date</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Date when campaign stops">End Date</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Actions allowed by Administrators">Admin Actions</TableHeaderColumn>
+                <TableHeaderColumn style={tableStyles.mediumColumn} tooltip="Day and time when campaign starts running">Start Date</TableHeaderColumn>
+                <TableHeaderColumn style={tableStyles.mediumColumn} tooltip="Date when campaign stops">End Date</TableHeaderColumn>
+                <TableHeaderColumn style={tableStyles.narrowColumn} tooltip="Actions allowed by Administrators">Admin Actions</TableHeaderColumn>
             </TableRow>
         </TableHeader>
         <TableBody showRowHover={true} displayRowCheckbox={false} >
