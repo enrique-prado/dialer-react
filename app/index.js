@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import SpokenPlayerApp from './containers/SpokenDialerApp';
 import MockHOOPService from '../services/MockHOOPService';
-import MockDialerAdminService from '../services/MockDialerAdminService';
-//import MockHoursDataService from '../services/mockDataService'
+//import MockDialerAdminService from '../services/MockDialerAdminService';
+import DialerAdminService from '../services/DialerAdminService';
 
 //Needed for onTouchTap
 //Can go away when react 1.0 release
@@ -16,6 +16,6 @@ injectTapEventPlugin();
 ReactDOM.render(
     <SpokenPlayerApp 
         hoopService={MockHOOPService}
-        dialerAdminService={MockDialerAdminService} />,
+        dialerAdminService={DialerAdminService} />,
     document.getElementById('app')
 );
