@@ -103,7 +103,7 @@ var SpokenDialerApp = React.createClass({
       console.log('populateCampaignsDlg CALLED')
       //Reloads campaigns array
       var self = this;
-       this.props.dialerAdminService.getCampaignsSummary(self.state.selectedCustomer)
+       this.props.dialerAdminService.getCampaignSummaries(self.state.selectedCustomer)
        .then(function(result) {
            self.setState({
                campaigns : result

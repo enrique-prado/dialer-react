@@ -1,7 +1,7 @@
 var DialerAdminService = (function () {
         var moment = require('moment');
         var urlBase = '/getdata?template=';
-        var getCampaignSummariesQTemplate = 'dialer_getCampaignSummaries';
+        var getCampaignSummariesQTemplate = 'dlr_getcampaign_summaries';
         var getClientListQTemplate = 'userclientlist';
         var rowsRange = '&startrow=0&rowcount=30';
         var custNameParam = '&cust_name=';
@@ -61,52 +61,6 @@ var DialerAdminService = (function () {
         };
         
 
-        function getSchedEntries (custName, qType) {
-            console.log("getSchedEntries CALLED...");
-            console.log("custName = " + custName + ", qType = " + qType);
-            
-            return new Promise(function(resolve, reject) {
-                var xhr = new XMLHttpRequest();
-                
-                xhr.onload = function() {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        console.log('dataService.getSchedEntries succeeds');
-                        //parse response and make entries array
-                        var entryList = xhr.response.replace(/\r\n/g,"\n");
-                        var entries = entryList.split("\n");
-                        var schedEntries = [];
-                        
-                        //get rid of the last line in entries if it is empty
-                        if (entries[entries.length - 1] == '')
-                            entries.length = entries.length - 1;
-                        
-                        console.log('Number of entries returned: ' + entries.length);
-                            
-                        for (var i in entries) {
-                            var newEntry = JSON.parse(entries[i]);
-                            schedEntries.push(newEntry);
-                            //console.log('Added SchedNav entry:');
-                            //console.log('appId: ' + newEntry.appId + ' , queue: ' + newEntry.queue);
-                        }
-                        
-                        resolve(schedEntries); //Return final array
-                    }
-                    else {
-                        console.log('ERROR retrieving dataService.getSchedEntries()');
-                        resolve([]);
-                    }            
-                }
-            
-                xhr.onerror = reject;
-                //console.log("Fetching Sched NavMenu entries for customer " + custName + " sched type: " + qType);
-                xhr.open("GET","/getdata?template=hop_getmenuentries" +
-                    "&cust_name=" + custName + "&queue_type=" + qType +
-                    "&startrow=0&rowcount=20", true);            
-                xhr.send();
-            });            
-        };
-        
-       
         function getCampaignSummaries( clientId ) {
             console.log("getCampaignSummaries called...");
             console.log("clientId = " + clientId);
@@ -129,11 +83,9 @@ var DialerAdminService = (function () {
                         console.log('Number of entries returned: ' + entries.length);
                         
                         for (var i = 0; i < entries.length; i++) {
-                            var newEntry = JSON.parse(entries[i]);
-                            newEntry.campaignName = newEntry.name;
-                            newEntry.deleted = false; // Query template only returns non deleted campaigns
-                            newEntry.updated = false; // flag that indicates if record has been changed by user
-                            campaignEntries.push(newEntry);
+                            var jsonEntry = JSON.parse(entries[i]);
+                            var campaign = new CampaignSummaryVM(jsonEntry);
+                            campaignEntries.push(campaign);
                         }
                         console.log('NUMBER OF ENTRIES INSERTED: ' + campaignEntries.length)
                         resolve (campaignEntries); // Return final array
@@ -145,18 +97,50 @@ var DialerAdminService = (function () {
                 }
                                                     
                 xhr.onerror = reject;
-                //console.log("Fetching hours for cust_name " + custName + "queue_type: " + qType + " , queue_name: " + queue);
+                console.log("Fetching for Client " + clientId );
                 xhr.open("GET","/getdata?template=" + getCampaignSummariesQTemplate +
-                    "&client_name=" + custName +
+                    "&client_name=" + clientId +
                     "&startrow=0&rowcount=30", true);            
+   
                 xhr.send();
             });             
         }
+
+
+        function CampaignSummaryVM(campaign) {
+            this.name = campaign.name;
+            this.status = convertStatus(campaign.status);
+            this.startDate = campaign.start;
+            this.endDate = campaign.end;
+            this.row_id = campaign.campaign_id;
+            this.deleted = false; // Query template only returns non deleted campaigns
+            this.updated =false; // flag that indicates if record has been changed by user
+        }            
         
-       
- 
         
     //Helper functions
+
+   function convertStatus(status) {
+        switch (status) {
+            case "active" :
+                return "running";
+            case "paused" :
+                return "paused";
+            case "ended" :
+                return "expired";
+            case "stopped" :
+                return "stopped";
+            case "not_started" :
+                return "pending";
+            case "1" :
+                return "running";
+            case "0" :
+                return "pending";
+            default:
+                return "invalid";
+        }
+    }
+
     function parseDate(selector) {
         console.log('date to be parsed: ' + selector );
         //Check to see if date is in format of '____-mm-dd' and convert it to valid date

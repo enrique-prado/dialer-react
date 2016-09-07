@@ -70,7 +70,7 @@ var MockDialerAdminService = (function () {
 
     // Public interface methods
     return {
-        getCampaignsSummary : getCampaignsSummaryMock
+        getCampaignSummaries : getCampaignsSummaryMock
 
     }
 

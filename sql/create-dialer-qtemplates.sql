@@ -7,13 +7,20 @@
  */
 
 
-DELETE FROM mpact.query_template WHERE name = "dialer_getCampaignSummaries";
+DELETE FROM mpact.query_template WHERE name = "dlr_getcampaign_summaries";
  INSERT mpact.query_template 
  (name,allow_guide,allow_super,allow_admin,template,args,format) VALUES (
- "dialer_getCampaignSummaries","1","1","1",
- "SELECT IsMemberAllowed('~','ViewCampaigns') INTO @authok;
- SELECT cmp.campaign_id, cmp.name, cmp.client, cmp.start_date, cmp.end_date, cmp.status, cmp.deleted FROM cmp.campaign AS cmp
- WHERE client=@client_name AND tenant='Startek' AND deleted='0' AND @authok='1' ORDER BY cmp.start_date ASC",
- "SET @client_name=''","%campaign_id%s%,%name%s%,%client%s%,%start_date%s%,%end_date%s%,%status%s%");
+ "dlr_getcampaign_summaries","1","1","1",
+ "SELECT campaign_id, name, start_date, end_date, active FROM dialer.campaign
+  WHERE client=@client_name",
+ "SET @client_name=''",'{"campaign_id":"%campaign_id%s%","name":"%name%s%","start":"%start_date%s%","end":"%end_date%s%","status":"%active%s%"}'
+ );
 
 
+DELETE FROM mpact.query_template WHERE name = "dlr_markcampaign_deleted";
+INSERT INTO mpact.query_template
+(name,allow_guide,allow_super,allow_admin,template,args,format) VALUES
+("dlr_markcampaign_deleted","1","1","1",
+ "UPDATE dialer.campaign SET deleted = '1'  
+  WHERE campaign_id = @campid;", 
+ "SET @campid=''", "success");
