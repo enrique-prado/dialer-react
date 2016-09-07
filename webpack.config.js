@@ -2,7 +2,7 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: [
-        'webpack-dev-server/client?http://localhost:8080',        
+        //'webpack-dev-server/client?http://localhost:8080',        
         'webpack/hot/only-dev-server',
         './app/index.js'
     ],
@@ -25,7 +25,7 @@ module.exports = {
     output: {
         path: 'dist',
         publicPath: '/',
-        filename: 'bundle.js'
+        filename: 'dialer-admin-bundle.js'
     },
     devServer: {
         contentBase: './dist',

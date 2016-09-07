@@ -17,3 +17,4 @@ icon-builder/jsx
 .DS_STORE
 dist/bundle.js
 dist/bundle.js.map
+dist/dialer-admin-bundle.js
