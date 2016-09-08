@@ -110,6 +110,20 @@ var SpokenDialerApp = React.createClass({
            });
        });
   },
+
+  // HELPER METHODS
+  updateChangedEntries : function() {
+      //Only update rows that changed
+      var self = this;
+      this.state.campaigns.forEach (function(entry, index) {
+        if ((entry.row_id != 'NEW_ID') && (entry.updated)) { 
+            self.props.dialerAdminService.deleteCampaign(entry)
+            .then(function(result) {
+                console.log('Updated campaign, Result:' + result);
+                });   
+        }  
+      });
+  },  
   
   //UI RENDERING
   render: function() {

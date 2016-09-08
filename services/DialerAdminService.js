@@ -2,6 +2,7 @@ var DialerAdminService = (function () {
         var moment = require('moment');
         var urlBase = '/getdata?template=';
         var getCampaignSummariesQTemplate = 'dlr_getcampaign_summaries';
+        var markCampaignDeletedQTemplate = 'dlr_markcampaign_deleted';
         var getClientListQTemplate = 'userclientlist';
         var rowsRange = '&startrow=0&rowcount=30';
         var custNameParam = '&cust_name=';
@@ -105,6 +106,39 @@ var DialerAdminService = (function () {
                 xhr.send();
             });             
         }
+
+        function deleteCampaign( campaignObj ) {
+            console.log("deleteCampaign called...");
+            
+            return new Promise(function(resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        console.log('DialerAdminService.deleteCampaign succeeds');
+                        var result = xhr.response;
+                        resolve(result); //Return status
+                    }
+                    else {
+                        console.log('ERROR in DialerAdminService.deleteCampaign(), status: ' + xhr.status);
+                        resolve(xhr.status);
+                    }            
+                }
+            
+                xhr.onerror = reject;
+                var deleted = Number(campaignObj.deleted);
+
+                //Convert Date to time string
+                var openTime = getTimeString(hourObj.open);
+                var closeTime = getTimeString(hourObj.close);
+                xhr.open("GET","/updatedata?template=" + markCampaignDeletedQTemplate +
+                    "&campaign_id=" + hourObj.row_id
+                    , true);
+                                
+                xhr.send();
+            });                        
+        }
+                
 
 
         function CampaignSummaryVM(campaign) {
