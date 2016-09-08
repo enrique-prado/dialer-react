@@ -79,6 +79,9 @@ var SpokenDialerApp = React.createClass({
       if ((prevState.selectedCustomer !== this.state.selectedCustomer)) {
         this.populateCampaignsDlg();
       }
+      
+    this.updateChangedEntries(); //TODO: Move inside confirmation dialog.
+
   },
   
   // USER DRIVER EVENTS
@@ -89,7 +92,8 @@ var SpokenDialerApp = React.createClass({
     console.log("Selected Customer is " + value);
   },    
 
-    handleCampaignsUpdate : function(key, updatedRow) {
+  handleCampaignsUpdate : function(key, updatedRow) {
+    console.log("handleCampaignUpdate key is " + key);        
     //merge updated row with current row and rerender by setting state
     var updatedRows = this.state.campaigns;
     updatedRow.updated = true; // Flag row as dirty
@@ -100,7 +104,7 @@ var SpokenDialerApp = React.createClass({
   },
 
   populateCampaignsDlg: function() {
-      console.log('populateCampaignsDlg CALLED')
+      console.log('populateCampaignsDlg CALLED');
       //Reloads campaigns array
       var self = this;
        this.props.dialerAdminService.getCampaignSummaries(self.state.selectedCustomer)
@@ -113,6 +117,7 @@ var SpokenDialerApp = React.createClass({
 
   // HELPER METHODS
   updateChangedEntries : function() {
+      console.log('updateChangedEntries CALLED');
       //Only update rows that changed
       var self = this;
       this.state.campaigns.forEach (function(entry, index) {

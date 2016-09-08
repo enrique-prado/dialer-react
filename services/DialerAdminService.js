@@ -108,7 +108,7 @@ var DialerAdminService = (function () {
         }
 
         function deleteCampaign( campaignObj ) {
-            console.log("deleteCampaign called...");
+            console.log("DialerAdminService.deleteCampaign called...");
             
             return new Promise(function(resolve, reject) {
                 var xhr = new XMLHttpRequest();
@@ -126,13 +126,9 @@ var DialerAdminService = (function () {
                 }
             
                 xhr.onerror = reject;
-                var deleted = Number(campaignObj.deleted);
 
-                //Convert Date to time string
-                var openTime = getTimeString(hourObj.open);
-                var closeTime = getTimeString(hourObj.close);
                 xhr.open("GET","/updatedata?template=" + markCampaignDeletedQTemplate +
-                    "&campaign_id=" + hourObj.row_id
+                    "&campid=" + campaignObj.row_id
                     , true);
                                 
                 xhr.send();
@@ -224,7 +220,8 @@ var DialerAdminService = (function () {
    
     // Public interface methods
     return {
-        getCampaignSummaries : getCampaignSummaries
+        getCampaignSummaries : getCampaignSummaries,
+        deleteCampaign : deleteCampaign
 
     }
 })();
