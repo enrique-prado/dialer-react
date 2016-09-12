@@ -31,7 +31,6 @@ const tableStyles = {
 var CampaignsTable = React.createClass({
   propTypes: {
     rows: React.PropTypes.array,
-    onCampaignsUpdate: React.PropTypes.func
     //enableDialerActions:React.PropTypes.bool,
     //enableCampaignEditing:React.PropTypes.bool
   },
@@ -45,8 +44,8 @@ var CampaignsTable = React.createClass({
     console.log('Row key: ' + key );
     console.log('Correspoding row_id: ' + this.props.rows[key].row_id);
     var updatedRow = this.props.rows[key];
-    updatedRow.deleted = true;
-    this.props.onCampaignsUpdate(key, updatedRow);       
+    //updatedRow.deleted = true;
+    this.props.onCampaignDelete(key, updatedRow);       
   },
 
   //UI Rendering
