@@ -31,6 +31,8 @@ const tableStyles = {
 var CampaignsTable = React.createClass({
   propTypes: {
     rows: React.PropTypes.array,
+    //onCampaignsUpdate: React.PropTypes.func,
+    onCampaignDelete: React.PropTypes.func,
     //enableDialerActions:React.PropTypes.bool,
     //enableCampaignEditing:React.PropTypes.bool
   },

@@ -18,9 +18,8 @@ const AdminStyles = {
 var CampaignsAdminContainer = React.createClass({
   propTypes: {
     campaigns: React.PropTypes.array,
-    onCampaignsUpdate: React.PropTypes.func,     
-    onSave:React.PropTypes.func,
-    onCancel:React.PropTypes.func
+    onCampaignDelete:React.PropTypes.func,
+    //onCancel:React.PropTypes.func
     //onNewRowAccepted:React.PropTypes.func,
     //enableDialerActions:React.PropTypes.bool,
     //enableCampaignEditing:React.PropTypes.bool,
@@ -31,29 +30,19 @@ var CampaignsAdminContainer = React.createClass({
           showNewEntryRow : false
       };
   },
-  handleAddRow: function() {
+  handleAddCampaign: function() {
       //Show create campaign dialog
      
   },
-  handleRowAccepted : function(e) {
-      //Call parent so it can add new row to array
-
-  },
-  handleSaveHours : function() {
-    //TODO:Check to see if new row needs to be accepted first
-    // TODO: Also commit any changes to updated rows
-    this.props.onSave();  
-  },
-  handleCancelHours : function() {
-    // Throw away any uncommitted changes, call parent to do this.
-    //TODO: Reject new row if it's visible
-    this.props.onCancel();  
-  },
+  handleCampaignDelete: function(key, updateRow) {
+      //Show create campaign dialog
+     this.props.onCampaignDelete(key, updateRow)
+  },  
 
     render: function() {
         var add_row = (
                     <div>
-                        <IconButton onClick={this.handleAddRow}>
+                        <IconButton onClick={this.handleAddCampaign}>
                             <ContentAdd color={Colors.green300} hoverColor={Colors.green700} />
                         </IconButton>                      
                     </div>            
@@ -64,7 +53,7 @@ var CampaignsAdminContainer = React.createClass({
                 <div>
                     <CampaignsTable style={AdminStyles.mainTable}
                         rows={this.props.campaigns}
-                        onCampaignsUpdate={this.props.onCampaignsUpdate}/>
+                        onCampaignDelete={this.handleCampaignDelete}/>
                     <div>
                         {add_row}
                     </div>

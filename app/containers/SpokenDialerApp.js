@@ -90,7 +90,19 @@ var SpokenDialerApp = React.createClass({
     this.setState({campaigns : [] }) // Clear table TODO: This is inefficient, find out a way to make timepicker control refresh
 
     console.log("Selected Customer is " + value);
-  },    
+  },
+
+  handleCampaignDelete : function(key, updatedRow) {
+    console.log("handleCampaignDelete key is " + key);        
+    //merge updated row with current row and rerender by setting state
+    var updatedRows = this.state.campaigns;
+    updatedRow.deleted = true;
+    updatedRow.updated = true; // Flag row as dirty
+    Object.assign(updatedRows[key], updatedRow);
+    this.setState({
+        campaigns : updatedRows
+    });
+  },   
 
   handleCampaignsUpdate : function(key, updatedRow) {
     console.log("handleCampaignUpdate key is " + key);        
@@ -102,6 +114,8 @@ var SpokenDialerApp = React.createClass({
         campaigns : updatedRows
     });
   },
+
+  // DATA MANIPULATION METHODS
 
   populateCampaignsDlg: function() {
       console.log('populateCampaignsDlg CALLED');
@@ -115,17 +129,18 @@ var SpokenDialerApp = React.createClass({
        });
   },
 
-  // HELPER METHODS
   updateChangedEntries : function() {
       console.log('updateChangedEntries CALLED');
       //Only update rows that changed
       var self = this;
       this.state.campaigns.forEach (function(entry, index) {
-        if ((entry.row_id != 'NEW_ID') && (entry.updated)) { 
-            self.props.dialerAdminService.deleteCampaign(entry)
-            .then(function(result) {
-                console.log('Updated campaign, Result:' + result);
-                });   
+        if ((entry.row_id != 'NEW_ID') && (entry.updated)) {
+            if (entry.deleted) { 
+                self.props.dialerAdminService.deleteCampaign(entry)
+                .then(function(result) {
+                    console.log('Updated campaign, Result:' + result);
+                    });   
+            }
         }  
       });
   },  
@@ -148,7 +163,7 @@ var SpokenDialerApp = React.createClass({
         <div className="mainPane" style={appStyles.content}>
             <CampaignsAdminContainer 
                 campaigns={this.state.campaigns}
-                onCampaignsUpdate={this.handleCampaignsUpdate}/>
+                onCampaignDelete={this.handleCampaignDelete}/>
         </div>                    
       </div>
     );
